@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         hamster kombat cheat
 // @namespace    https://discord.gg/7radMBMnNZ
-// @version      v3.0
+// @version      v3.1
 // @description  homyak podrub!!!
 // @author       ulybaka1337
 // @match        https://hamsterkombatgame.io/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
+// @downloadURL  https://raw.githubusercontent.com/ulybaka1337/hamster-kombat-cheat/main/main.js
+// @updateURL    https://raw.githubusercontent.com/ulybaka1337/hamster-kombat-cheat/main/main.js
 // ==/UserScript==
 
 // ченжлог
@@ -14,6 +16,7 @@
 // v1.1 - проверка на пустой токен
 // v2.0 - чит сам забирает токен и вам не надо ничего вводить
 // v3.0 - смена языка на английский, проверка на ошибки
+// v3.1 - юрлы
 
 (function() {
     'use strict'
