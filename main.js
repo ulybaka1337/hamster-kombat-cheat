@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hamster kombat cheat
 // @namespace    https://discord.gg/7radMBMnNZ
-// @version      v2.0
+// @version      v3.0
 // @description  homyak podrub!!!
 // @author       ulybaka1337
 // @match        https://hamsterkombatgame.io/*
@@ -13,15 +13,26 @@
 // v1 - релиз, функции - выклик, сменить биржу, вкачать карту
 // v1.1 - проверка на пустой токен
 // v2.0 - чит сам забирает токен и вам не надо ничего вводить
+// v3.0 - смена языка на английский, проверка на ошибки
 
 (function() {
     'use strict'
-    alert("Внимание!! Чтобы мод меню на хомячка работало вам надо скачать расширение\n\nхром - https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino\n\nфайрфокс - https://addons.mozilla.org/ru/firefox/addon/cors-unblock/")
+    //alert("Внимание!! Чтобы мод меню на хомячка работало вам надо скачать расширение\n\nхром - https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino\n\nфайрфокс - https://addons.mozilla.org/ru/firefox/addon/cors-unblock/")
+    alert("RU: Напоминание: проверьте что у вас установлено и включено расширение CORS Unblock!\n\nEN: Reminder: make sure u have installed CORS Unblock extension and enabled it!")
 
-
+    let lang = "ru";
     let token = "Bearer " + localStorage.getItem("authToken");
     let exchangeId = "";
     let cardId = "";
+
+    let err_emptyExchangeId = "";
+    let err_emptyCardId = "";
+    let responseSuccess = "";
+    let responseFailure = "";
+    let err_emptyCps = "";
+    let isClicking = false;
+    let startClicking = "";
+
 
     /*let tokenInput = document.createElement("INPUT");
     tokenInput.setAttribute("type", "text");
@@ -46,10 +57,11 @@
     applyTokenBtn.addEventListener('click', applyToken);*/
 
     const instaClickBtn = document.createElement('button');
-    instaClickBtn.innerText = "выкликать всю энергию";
-    function instaClick() {
-        alert("перезагрузите страницу для изменений");
-        fetch("https://api.hamsterkombatgame.io/clicker/tap", {
+    instaClickBtn.innerText = "";
+    async function instaClick() {
+        //if (lang == "ru") {
+        //alert("перезагрузите страницу для изменений");
+        let response = await fetch("https://api.hamsterkombatgame.io/clicker/tap", {
             "headers": {
                 "accept": "application/json",
                      "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -70,28 +82,35 @@
             "method": "POST",
             "mode": "cors",
             "credentials": "include"
-        });}
-    instaClickBtn.setAttribute("style", "position: relative; z-index: 999")
+        });
+        if (!response.ok) {
+                alert(responseFailure + "\nBody:" + response.text)
+            } else {
+                alert(responseSuccess + "\nBody:" + response.text)
+            }
+    }
+    instaClickBtn.setAttribute("style", "position: relative; z-index: 999");
     document.body.appendChild(instaClickBtn);
     instaClickBtn.addEventListener('click', instaClick);
 
     let exchangeIdInput = document.createElement("INPUT");
     exchangeIdInput.setAttribute("type", "text");
-    exchangeIdInput.placeholder = "айди биржи";
+    exchangeIdInput.placeholder = "";
     exchangeIdInput.size = 8;
-    exchangeIdInput.setAttribute("style", "position: relative; z-index: 999")
+    exchangeIdInput.setAttribute("style", "position: relative; z-index: 999");
     document.body.appendChild(exchangeIdInput);
 
     const applyExchangeBtn = document.createElement('button');
-    applyExchangeBtn.innerText = "применить  биржу";
+    applyExchangeBtn.innerText = "";
     applyExchangeBtn.setAttribute("style", "position: relative; z-index: 999");
-    function applyExchange() {
+
+    async function applyExchange() {
         exchangeId = exchangeIdInput.value;
         if (exchangeId.length === 0) {
-            alert("перемога!!! пустой айди биржи!!");
+            alert(err_emptyExchangeId);
         } else {
-        alert("ваша новая биржа - " + exchangeId + ", перезагрузите страницу для изменений");
-        fetch("https://api.hamsterkombatgame.io/clicker/select-exchange", {
+        // ignore that error, tampermonkey is outdated af
+        let response = await fetch("https://api.hamsterkombatgame.io/clicker/select-exchange", {
             "headers": {
                 "accept": "application/json",
                 "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -112,28 +131,35 @@
                 "mode": "cors",
                 "credentials": "include"
         });
+        if (!response.ok) {
+            alert(responseFailure + "\nBody:" + response.text)
+        } else {
+            alert(responseSuccess + "\nBody:" + response.text)
+        }
         exchangeIdInput.value = "";
+
     }}
     document.body.appendChild(applyExchangeBtn);
     applyExchangeBtn.addEventListener('click', applyExchange);
 
     let cardIdInput = document.createElement("INPUT");
     cardIdInput.setAttribute("type", "text");
-    cardIdInput.placeholder = "айди карты";
+    cardIdInput.placeholder = "";
     cardIdInput.size = 10;
     cardIdInput.setAttribute("style", "position: relative; z-index: 999")
     document.body.appendChild(cardIdInput);
 
     const upgradeCardBtn = document.createElement('button');
-    upgradeCardBtn.innerText = "улучшить карту";
+    upgradeCardBtn.innerText = "";
     upgradeCardBtn.setAttribute("style", "position: relative; z-index: 999");
-    function upgradeCard() {
+
+    async function upgradeCard() {
         cardId = cardIdInput.value;
         if (cardId.length === 0) {
-            alert("перемога!!! пустой айди карты!!");
+            alert(err_emptyCardId);
         } else {
-        alert("вы улучшили карту - " + cardId + ", перезагрузите страницу для изменений");
-        fetch("https://api.hamsterkombatgame.io/clicker/buy-upgrade", {
+        //alert("вы улучшили карту - " + cardId + ", перезагрузите страницу для изменений");
+        let response = await fetch("https://api.hamsterkombatgame.io/clicker/buy-upgrade", {
             "headers": {
                 "accept": "application/json",
                 "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -154,8 +180,71 @@
                 "mode": "cors",
                 "credentials": "include"
         });
+            if (!response.ok) {
+                alert(responseFailure + "\nBody:" + response.text)
+            } else {
+                alert(responseSuccess + "\nBody:" + response.text)
+            }
             cardIdInput.value = "";
     }}
     document.body.appendChild(upgradeCardBtn);
     upgradeCardBtn.addEventListener('click', upgradeCard);
+
+    const switchLangBtn = document.createElement('button');
+    switchLangBtn.innerText = "";
+    switchLangBtn.setAttribute("style", "position: relative; z-index: 999");
+    function flipLang(){
+      if (lang == "ru") {
+          setLang("en");
+      } else {
+          setLang("ru");
+      }
+    }
+
+    document.body.appendChild(switchLangBtn);
+    switchLangBtn.addEventListener('click', flipLang);
+
+    /*let cpsInput = document.createElement("INPUT");
+    cpsInput.setAttribute("type", "number");
+    cpsInput.placeholder = "";
+    cpsInput.size = 12;
+    cpsInput.setAttribute("style", "position: relative; z-index: 999")
+    document.body.appendChild(cardIdInput);
+
+    const autoclickerBtn = document.createElement('button');
+    autoclickerBtn.innerText = "";
+
+    function autoclick(){
+
+    }*/
+
+    function setLang(tolang){
+        if (tolang == "ru") {
+            instaClickBtn.innerText = "выкликать всю энергию";
+            cardIdInput.placeholder = "айди карты";
+            upgradeCardBtn.innerText = "улучшить карту";
+            exchangeIdInput.placeholder = "айди биржи";
+            applyExchangeBtn.innerText = "применить  биржу";
+            err_emptyExchangeId = "нужна допомога!!! пустой айди биржи!!";
+            err_emptyCardId = "нужна допомога!!! пустой айди карты!!";
+            responseSuccess = "Отлично! Вот код и ответ от сервера:";
+            responseFailure = "Ошибка! Думаю что в ответе от сервера будет все понятно:";
+            switchLangBtn.innerText = "switch to english";
+            lang = "ru";
+        } else if (tolang == "en") {
+            instaClickBtn.innerText = "instaclick";
+            cardIdInput.placeholder = "card id";
+            upgradeCardBtn.innerText = "upgrade card";
+            exchangeIdInput.placeholder = "exchange id";
+            applyExchangeBtn.innerText = "change exchange";
+            err_emptyExchangeId = "exchange id is empty!!";
+            err_emptyCardId = "card id is empty!!";
+            responseSuccess = "Success! Here is the code and server answer:";
+            responseFailure = "Damn! Error! Check out server's response:";
+            switchLangBtn.innerText = "пом. язык на русский";
+            lang = "en";
+        }
+    }
+
+    setLang("ru");
 })();
