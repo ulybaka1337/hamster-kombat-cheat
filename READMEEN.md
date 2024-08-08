@@ -1,4 +1,5 @@
 # Hamster Kombat Cheat (Tampermonkey script)
+**[ИНСТРУКЦИЯ НА РУССКОМ](https://github.com/ulybaka1337/hamster-kombat-cheat/blob/main/README.md)**
 
 Hamster Kombat Cheat.
 
