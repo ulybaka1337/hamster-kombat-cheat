@@ -1,5 +1,5 @@
 # Hamster Kombat Cheat (Tampermonkey script)
-# [ENGLISH](https://github.com/ulybaka1337/hamster-kombat-cheat/blob/main/READMEEN.md)
+**[ENGLISH](https://github.com/ulybaka1337/hamster-kombat-cheat/blob/main/READMEEN.md)**
 
 Чит на хамстер комбат.
 
