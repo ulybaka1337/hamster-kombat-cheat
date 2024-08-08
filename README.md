@@ -1,4 +1,4 @@
-# Hamster Kombat Cheat (Tampermonkey scipt)
+# Hamster Kombat Cheat (Tampermonkey script)
 
 Чит на хамстер комбат.
 
