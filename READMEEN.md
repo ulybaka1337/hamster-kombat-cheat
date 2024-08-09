@@ -9,4 +9,4 @@ When u got both of extensions [click here](https://github.com/ulybaka1337/hamste
 
 My discord server - [click](https://discord.gg/7radMBMnNZ)
 
-![Hamster Kombat Cheat v2 screenshot](hamsterv3en.png)
+![Hamster Kombat Cheat v2 screenshot](hamsterv4en.png)
