@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hamster kombat cheat
 // @namespace    https://discord.gg/7radMBMnNZ
-// @version      v4.0
+// @version      v4.1
 // @description  homyak podrub!!!
 // @author       ulybaka1337
 // @match        https://hamsterkombatgame.io/*
@@ -18,6 +18,7 @@
 // v3.0 - смена языка на английский, проверка на ошибки
 // v3.1 - юрлы
 // v4.0 - иконка, автокликер, нормальный обработчик ошибок
+// v4.1 - мини фикс
 
 (function() {
     'use strict'
@@ -251,7 +252,7 @@
             applyExchangeBtn.innerText = "применить  биржу";
             err_emptyExchangeId = "нужна допомога!!! пустой айди биржи!!";
             err_emptyCardId = "нужна допомога!!! пустой айди карты!!";
-            res_responseSuccess = "отлично! перезагрузите страницу чтобы посмотреть изменения ";
+            res_responseSuccess = "отлично! тапните хомяка 1 раз чтобы увидеть изменения";
             res_responseFailure = "ошибка! думаю что в ответе от сервера будет все понятно: ";
             switchLangBtn.innerText = "switch to english";
             cpsInput.placeholder = "кол-во кликов в сек.";
@@ -273,7 +274,7 @@
             applyExchangeBtn.innerText = "change exchange";
             err_emptyExchangeId = "exchange id is empty!!";
             err_emptyCardId = "card id is empty!!";
-            res_responseSuccess = "success! refresh the page for results ";
+            res_responseSuccess = "success! click hamster once for results ";
             res_responseFailure = "damn! error! сheck out server's response: ";
             switchLangBtn.innerText = "пом. язык на русский";
             cpsInput.placeholder = "clicks per second";
