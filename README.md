@@ -9,4 +9,4 @@
 
 Мой пиздатый дискорд сервак - [тык](https://discord.gg/7radMBMnNZ)
 
-![Hamster Kombat Cheat v2 screenshot](hamsterv3ru.png)
+![Hamster Kombat Cheat v5 screenshot](hamsterv5ru.png)
