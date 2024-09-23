@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hamster kombat cheat
 // @namespace    https://discord.gg/7radMBMnNZ
-// @version      v4.1
+// @version      v5.0
 // @description  homyak podrub!!!
 // @author       ulybaka1337
 // @match        https://hamsterkombatgame.io/*
@@ -18,7 +18,7 @@
 // v3.0 - смена языка на английский, проверка на ошибки
 // v3.1 - юрлы
 // v4.0 - иконка, автокликер, нормальный обработчик ошибок
-// v4.1 - мини фикс
+// v5.0 - обнова под interlude, кнопка для покупки скинов, автооткрытие всех скинов
 
 (function() {
     'use strict'
@@ -32,17 +32,19 @@
     let res_responseSuccess = "";
     let res_responseFailure = "";
     let err_emptyCps = "";
+    let err_emptySkinId = "";
     let isClicking = false;
     let startAutoClicker;
     let stopAutoClicker;
     const delay = ms => new Promise(res => setTimeout(res, ms));
     let res_autoClickerFailure;
+    let res_unlockingSkins = "";
 
     const instaClickBtn = document.createElement('button');
     async function instaClick() {
         //if (lang == "ru") {
         //alert("перезагрузите страницу для изменений");
-        let response = await fetch("https://api.hamsterkombatgame.io/clicker/tap", {
+        let response = await fetch("https://api.hamsterkombatgame.io/interlude/tap", {
             "headers": {
                 "accept": "application/json",
                      "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -88,7 +90,7 @@
         if (exchangeIdInput.value.length === 0) {
             alert(err_emptyExchangeId);
         } else {
-        let response = await fetch("https://api.hamsterkombatgame.io/clicker/select-exchange", {
+        let response = await fetch("https://api.hamsterkombatgame.io/interlude/select-exchange", {
             "headers": {
                 "accept": "application/json",
                 "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -134,7 +136,7 @@
         if (cardIdInput.value.length === 0) {
             alert(err_emptyCardId);
         } else {
-        let response = await fetch("https://api.hamsterkombatgame.io/clicker/buy-upgrade", {
+        let response = await fetch("https://api.hamsterkombatgame.io/interlude/buy-upgrade", {
             "headers": {
                 "accept": "application/json",
                 "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -178,7 +180,7 @@
             alert(err_emptyCps);
         } else {
             while (isClicking) {
-            let response = await fetch("https://api.hamsterkombatgame.io/clicker/tap", {
+            let response = await fetch("https://api.hamsterkombatgame.io/interlude/tap", {
             "headers": {
                 "accept": "application/json",
                      "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -230,6 +232,78 @@
     document.body.appendChild(autoClickerBtn);
     autoClickerBtn.addEventListener('click', switchAutoClicker);
 
+    let skinIdInput = document.createElement("INPUT");
+    skinIdInput.setAttribute("type", "text");
+    skinIdInput.placeholder = "";
+    skinIdInput.size = 8;
+    skinIdInput.setAttribute("style", "position: relative; z-index: 999");
+    document.body.appendChild(skinIdInput);
+
+    const buySkinBtn = document.createElement('button');
+    buySkinBtn.setAttribute("style", "position: relative; z-index: 999");
+
+    async function buySkin() {
+        if (skinIdInput.value.length === 0) {
+            alert(err_emptySkinId);
+        } else {
+        let response = await fetch("https://api.hamsterkombatgame.io/interlude/buy-skin", {
+            "headers": {
+                "accept": "application/json",
+                "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+                "authorization": token,
+                "content-type": "application/json",
+                "priority": "u=1, i"
+            },
+                "referrer": "https://hamsterkombatgame.io/",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": "{\"skinId\": \"" + skinIdInput.value + "\", \"timestamp\": " + Date.now() + "}",
+                "method": "POST",
+                "credentials": "include"
+        });
+        if (!response.ok) {
+            alert(res_responseFailure + "\nCode: " + response.status + "\nBody: " + await response.text());
+        } else {
+            alert(res_responseSuccess);
+        }
+        skinIdInput.value = "";
+
+    }}
+    document.body.appendChild(buySkinBtn);
+    buySkinBtn.addEventListener('click', buySkin);
+
+    const buyAllSkinsBtn = document.createElement('button');
+    buyAllSkinsBtn.setAttribute("style", "position: relative; z-index: 999");
+
+    async function buySkin2(Id) {
+        let response = await fetch("https://api.hamsterkombatgame.io/interlude/buy-skin", {
+            "headers": {
+                "accept": "application/json",
+                "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+                "authorization": token,
+                "content-type": "application/json",
+                "priority": "u=1, i"
+            },
+                "referrer": "https://hamsterkombatgame.io/",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": "{\"skinId\": \"" + Id + "\", \"timestamp\": " + Date.now() + "}",
+                "method": "POST",
+                "credentials": "include"
+        });
+        console.log("Buying all skins! Skin id: " + Id + ", Code: " + response.status + ", Body: " + await response.text());
+    }
+    async function buyAllSkins() {
+        alert(res_unlockingSkins);
+        for(let i = 1; i < 39; i++) {
+            let skinId = "skin" + i;
+            await buySkin2(skinId);
+        }
+        alert(res_responseSuccess);
+    }
+    document.body.appendChild(buyAllSkinsBtn);
+    buyAllSkinsBtn.addEventListener('click', buyAllSkins)
+
+
+
     const switchLangBtn = document.createElement('button');
     switchLangBtn.setAttribute("style", "position: relative; z-index: 999");
     function flipLang(){
@@ -252,7 +326,7 @@
             applyExchangeBtn.innerText = "применить  биржу";
             err_emptyExchangeId = "нужна допомога!!! пустой айди биржи!!";
             err_emptyCardId = "нужна допомога!!! пустой айди карты!!";
-            res_responseSuccess = "отлично! тапните хомяка 1 раз чтобы увидеть изменения";
+            res_responseSuccess = "отлично! тапните хомяка 1 раз, смените скин, или просто перезагрузите страницу чтобы увидеть изменения";
             res_responseFailure = "ошибка! думаю что в ответе от сервера будет все понятно: ";
             switchLangBtn.innerText = "switch to english";
             cpsInput.placeholder = "кол-во кликов в сек.";
@@ -265,6 +339,11 @@
             } else {
                 autoClickerBtn.innerText = stopAutoClicker;
             }
+            skinIdInput.placeholder = "айди скина";
+            buySkinBtn.innerText = "купить скин";
+            err_emptySkinId = "нужна допомога!!! пустой айди скина!!";
+            buyAllSkinsBtn.innerText = "открыть все скины (во время interlude!)";
+            res_unlockingSkins = "открываем все скины... нажмите OK чтобы начать!"
             lang = "ru";
         } else if (tolang == "en") {
             instaClickBtn.innerText = "instaclick";
@@ -274,7 +353,7 @@
             applyExchangeBtn.innerText = "change exchange";
             err_emptyExchangeId = "exchange id is empty!!";
             err_emptyCardId = "card id is empty!!";
-            res_responseSuccess = "success! click hamster once for results ";
+            res_responseSuccess = "success! click hamster, change skin or just refresh the page once for results ";
             res_responseFailure = "damn! error! сheck out server's response: ";
             switchLangBtn.innerText = "пом. язык на русский";
             cpsInput.placeholder = "clicks per second";
@@ -287,6 +366,11 @@
             } else {
                 autoClickerBtn.innerText = stopAutoClicker;
             }
+            skinIdInput.placeholder = "skin id";
+            buySkinBtn.innerText = "buy skin";
+            err_emptySkinId = "skin id is empty!!";
+            buyAllSkinsBtn.innerText = "unlock all skins (during interlude!)"
+            res_unlockingSkins = "unlocking all skins... press OK to start!"
             lang = "en";
         }
     }
