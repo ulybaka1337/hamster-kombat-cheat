@@ -7,6 +7,4 @@
 
 Когда оба расширения у вас есть, просто нажмите [сюда](https://github.com/ulybaka1337/hamster-kombat-cheat/raw/main/main.js) чтобы установить скрипт.
 
-Мой пиздатый дискорд сервак - [тык](https://discord.gg/7radMBMnNZ)
-
 ![Hamster Kombat Cheat v5 screenshot](hamsterv5ru.png)
